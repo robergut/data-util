@@ -3,7 +3,7 @@
 		"joinColumns": [
 			"id"
 		],
-		"conditions": "",
+		"conditions": "inserted_at > '2023-02-12'",
 		"columns": [
 			"id",
 			"name",
