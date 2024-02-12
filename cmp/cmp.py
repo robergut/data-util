@@ -19,7 +19,7 @@ import logging
 import json_log_formatter
 import dbconfig
 import datacompy
-
+import os
 
 config = dbconfig.read_yaml('conf.yaml')
 
@@ -30,6 +30,49 @@ json_handler.setFormatter(formatter)
 logger = logging.getLogger(__name__)
 logger.addHandler(json_handler)
 logger.setLevel(logging.INFO)
+
+pg_list_tables = """
+    SELECT table_schema,
+           table_name
+      FROM information_schema.tables
+     WHERE table_type = 'BASE TABLE'
+       AND table_schema NOT IN ('pg_catalog', 'information_schema');"""
+pg_list_column_names = """
+    SELECT column_name
+      FROM information_schema.columns
+     WHERE table_schema = '%s'
+       AND table_name   = '%s';"""
+
+
+def store_tables_specification(file_name: str, json_body: str):
+    json_formatted_str = json.dumps(json_body, indent=3)
+    with open(file_name, "w") as outfile:
+        outfile.write(json_formatted_str)
+
+
+def create_table_specification(resource: str):
+    """Retrieves table names with their column names"""
+
+    db_spec = {}
+
+    params = dbconfig.load_config(config['global']['dbconf_path'], resource)
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+
+    logger.info("Creating new table specification table")
+    ds = pandas.read_sql_query(pg_list_tables, conn)
+    for _, table in ds.iterrows():
+        table_cols = pandas.read_sql_query(pg_list_column_names % (table['table_schema'], table['table_name']), conn)
+        db_spec[f"{table['table_schema']}.{table['table_name']}"] = {
+            'joinColumns': ['id'],
+		    'conditions': '',
+		    'columns': table_cols.column_name.values.tolist(),
+        }
+
+    cur.close()
+    conn.close()
+
+    return db_spec
 
 
 def get_tables(file: str = 'tables.json') -> dict:
@@ -86,21 +129,24 @@ def to_slack(url: str, body: dict) -> requests.Response:
 
 
 @click.command()
-@click.option('--columns', '-c', default=None, multiple=False, type=str,
-    help='List of comma separated columns e.g. "id,payoff_uid,created_date"')
-@click.option('--describe', '-d',  multiple=False,
-    help='Describe details of a table to be compared')
-@click.option('--table', '-t', multiple=False,
-    help='Name of table to be compared')
-@click.option('--where', '-w', default=None, multiple=False,
-    help='Where clause for the SQL query')
-@click.option('--environments', '-e', default=('localdb', 'postgres-db'),
-    multiple=True, help='Name of the two environments to be compared')
-def cli(columns, describe, table, where, environments):
+@click.option('--columns',      '-c', default=None, type=str, help='List of comma separated columns e.g. "id,payoff_uid,created_date"')
+@click.option('--describe',     '-d', help='Describe details of a table to be compared')
+@click.option('--table',        '-t', help='Name of table to be compared')
+@click.option('--where',        '-w', default=None, help='Where clause for the SQL query')
+@click.option('--environments', '-e', default=('localdb', 'postgres-db'), multiple=True, help='Name of the two environments to be compared')
+@click.option('--file',         '-f', default='tables.json', help='If file exists, takes it as table definition, else, creates a new table definition file with the name specified from first data source (Postgres Only)')
+def cli(columns, describe, table, where, environments, file):
     """Command line interface to define the tables to be compared"""
 
+    # --file
+    if not os.path.isfile(file):
+        tables_spec = create_table_specification(environments[0])
+        store_tables_specification(file, tables_spec)
+        print(f'[{file}] Tables specification file created')
+        return
+
     # Read metadata of the tables
-    meta = get_tables()
+    meta = get_tables(file)
     # Get table names
     tables = list(meta.keys())
 
@@ -126,7 +172,6 @@ def cli(columns, describe, table, where, environments):
         logger.info(f'[{table}] {sql_query}')
 
         src_dataframe = get_data_from_db(environments[0], sql_query)
-        #dst_dataframe = get_data_from_db(environments[1], sql_query.replace('vault_backend.content_resource', 'vault_backend.content_resource_copy'))
         dst_dataframe = get_data_from_db(environments[1], sql_query)
 
         compare = datacompy.Compare(

@@ -29,5 +29,5 @@ The Webhook URL must be defined.
 ## Run
 To execute the comparison, you need to define a list of tables to be compared:
 ```
-python dbcomparer -t <TABLE_NAME>
+python cmp -t <TABLE_NAME>
 ```
