@@ -1,4 +1,4 @@
-# DB compare
+# DB Data comparator
 This script helps to compare two tables from different databases, and could be useful in the migration of databases. Provides a summary of the differences, using `datacompy` library.
 
 ## Comparisson between tables
