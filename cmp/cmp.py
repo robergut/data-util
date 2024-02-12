@@ -31,6 +31,13 @@ logger = logging.getLogger(__name__)
 logger.addHandler(json_handler)
 logger.setLevel(logging.INFO)
 
+ora_list_tables = """
+    SELECT table_name
+      FROM dba_tables;"""
+sqlite_list_tables = ".tables"
+sql_server_list_tables = """
+    SELECT *
+      FROM information_schema.tables;"""
 pg_list_tables = """
     SELECT table_schema,
            table_name
@@ -44,13 +51,13 @@ pg_list_column_names = """
        AND table_name   = '%s';"""
 
 
-def store_tables_specification(file_name: str, json_body: str):
+def store_tables_specification(file_name: str, json_body: str) -> None:
     json_formatted_str = json.dumps(json_body, indent=3)
     with open(file_name, "w") as outfile:
         outfile.write(json_formatted_str)
 
 
-def create_table_specification(resource: str):
+def create_table_specification(resource: str) -> dict:
     """Retrieves table names with their column names"""
 
     db_spec = {}
@@ -138,7 +145,7 @@ def to_slack(url: str, body: dict) -> requests.Response:
 def cli(columns, describe, table, where, environments, file):
     """Command line interface to define the tables to be compared"""
 
-    # --file
+    # `file` option
     if not os.path.isfile(file):
         tables_spec = create_table_specification(environments[0])
         store_tables_specification(file, tables_spec)
