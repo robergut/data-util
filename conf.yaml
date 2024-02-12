@@ -1,8 +1,8 @@
 global:
   dbconf_path: ./database.ini
   # Slack webhook disabled
-  #webhook_path: https://hooks.slack.com/services/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
-  #webhook_path: https://hooks.slack.com/services/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
+  #webhook_path: 
+  #webhook_path: 
 
 init_config:
 
