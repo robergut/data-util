@@ -1,0 +1,438 @@
+{
+	"vault_auctions.authorization_extension": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"auction_id",
+			"bidder_id",
+			"status",
+			"updated_at_datetime"
+		]
+	},
+	"vault_auctions.bid": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"auction_id",
+			"bidder_id",
+			"bid_amount_usd",
+			"submitted_at_datetime",
+			"bid_status",
+			"payment_authorization_id",
+			"authorized_bid_amount_usd",
+			"original_payment_authorization_id",
+			"status_reason",
+			"username"
+		]
+	},
+	"vault_auctions.auction": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"auction_name",
+			"seller_id",
+			"created_by_user_id",
+			"created_at_datetime",
+			"external_resource_id",
+			"reserve_price_usd",
+			"price_increment_usd",
+			"start_datetime",
+			"end_datetime",
+			"auction_status",
+			"latest_bidder_id",
+			"total_number_of_bids",
+			"current_price_usd",
+			"vehicle_make",
+			"vehicle_model",
+			"vehicle_year",
+			"buyers_fee_percent",
+			"vehicle_zip_code",
+			"buyers_fee_min",
+			"buyers_fee_max",
+			"seller_full_name",
+			"submission_id",
+			"submission_datetime",
+			"listing_fee_usd",
+			"vehicle_vin",
+			"make_whole_reserve",
+			"buyers_premium_fee",
+			"final_sale_price",
+			"winner_notified_at",
+			"crm_ticket_id"
+		]
+	},
+	"vault_auctions.auction_stop_reason": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"auction_id",
+			"description",
+			"admin_id",
+			"inserted_at"
+		]
+	},
+	"vault_auctions.auction_change_history": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"auction_id",
+			"description",
+			"admin_id",
+			"inserted_at",
+			"type",
+			"reserve_price_usd",
+			"make_whole_reserve"
+		]
+	},
+	"vault_backend.vehicle_photo": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"mime_type",
+			"vehicle_id",
+			"photo_type",
+			"uploaded_at"
+		]
+	},
+	"vault_backend.user_account_status_history": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"user_account_id",
+			"old_account_status",
+			"new_account_status",
+			"change_reason",
+			"changed_by_user_id",
+			"changed_at"
+		]
+	},
+	"vault_backend.content_follower": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"follower_id",
+			"followed_content_id",
+			"inserted_at"
+
+		]
+	},
+	"vault_backend.content_bookmark": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"user_id",
+			"content_id",
+			"inserted_at"
+		]
+	},
+	"vault_backend.comment_flag_resolution": {
+		"joinColumns": [
+			"comment_id"
+		],
+		"conditions": "",
+		"columns": [
+			"comment_id",
+			"resolution_type",
+			"description",
+			"resolver_id",
+			"resolved_at"
+
+		]
+	},
+	"vault_backend.vehicle_documents": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"mime_type",
+			"vehicle_id",
+			"uploaded_at"
+		]
+	},
+	"vault_backend.campaign_creation": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"created_at",
+			"created_by",
+			"lock_id",
+			"campaign_name",
+			"segment_name",
+			"segment_id",
+			"from_name",
+			"reply_to",
+			"title",
+			"subject_line",
+			"preview_text",
+			"template_id",
+			"release_date",
+			"scheduled_date",
+			"external_resource_id",
+			"number_of_listings",
+			"number_of_stories",
+			"worker",
+			"worker_duration",
+			"status",
+			"status_message"
+		]
+	},
+	"vault_backend.analytics_aggregation": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"type",
+			"path",
+			"start_date",
+			"end_date",
+			"last_sample_value",
+			"accumulated_value",
+			"created_at",
+			"modified_at"
+		]
+	},
+	"vault_backend.comment_photo": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"photo_id",
+			"comment_id"
+		]
+	},
+	"vault_backend.content_resource": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"external_resource_id",
+			"follower_count",
+			"content_title",
+			"content_title_tsv",
+			"content_type_id",
+			"created_at",
+			"status",
+			"user_id"
+		]
+	},
+	"vault_backend.comment_upvote": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"upvoter_id",
+			"comment_id",
+			"inserted_at"
+		]
+	},
+	"vault_backend.comment_flag": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"flagger_id",
+			"comment_id",
+			"inserted_at"
+		]
+	},
+	"vault_backend.gallery_elements": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"type",
+			"position",
+			"vehicle_id",
+			"photo_id",
+			"document_photo_id"
+		]
+	},
+	"vault_backend.vehicle": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"full_name",
+			"make",
+			"model",
+			"year",
+			"vehicle_identification_number",
+			"title_status",
+			"description",
+			"titled_in",
+			"zip_code",
+			"mileage",
+			"seller_reserve_price",
+			"user_id",
+			"submitted_at",
+			"status",
+			"admin_reserve_price",
+			"status_reason",
+			"payment_value",
+			"payment_message",
+			"payment_status",
+			"accepted_at",
+			"mileage_during_ownership",
+			"mileage_distance_unit",
+			"seller_type",
+			"additional_fees",
+			"purchase_date",
+			"prior_ownership_history",
+			"odometer_reading_distance_unit",
+			"odometer_reading_details",
+			"damages",
+			"accidents",
+			"dealership_details",
+			"private_seller_details",
+			"other_titled_in",
+			"other_information",
+			"crm_ticket_id"
+		]
+	},
+	"vault_backend.additional_vehicle_info": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"current_loan_explanation",
+			"road_illegal_explanation",
+			"state_emission_inspection_explanation",
+			"exterior_color",
+			"interior_color",
+			"engine_displacement_and_configuration",
+			"engine_replacement_explanation",
+			"transmission_info",
+			"transmission_replacement_explanation",
+			"options_and_features",
+			"modifications",
+			"damages_and_accidents",
+			"cosmetic_repairs",
+			"cosmetic_flaws",
+			"rust",
+			"mechanical_flaws",
+			"servicing_and_documentation",
+			"servicing_needed",
+			"additional_items_included",
+			"current_online_advertising",
+			"other_information",
+			"video_links",
+			"vehicle_id",
+			"from_the_seller_description"
+		]
+	},
+	"vault_backend.comment": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"commenter_id",
+			"parent_comment_id",
+			"content_id",
+			"comment_text",
+			"comment_text_tsv",
+			"inserted_at",
+			"edited_at",
+			"deleted_at",
+			"upvote_count",
+			"flag_count",
+			"comment_type",
+			"bid_id",
+			"auction_id",
+			"bid_amount_usd",
+			"hidden",
+			"hidden_reason"
+		]
+	},
+	"vault_notifications.user_notification_preferences": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"account_change_web_notification",
+			"account_change_mail_notification",
+			"content_comment_web_notification",
+			"content_comment_mail_notification",
+			"comment_reply_web_notification",
+			"comment_reply_mail_notification",
+			"content_bid_web_notification",
+			"auction_start_end_web_notification",
+			"auction_start_end_mail_notification",
+			"bid_made_web_notification",
+			"bid_made_mail_notification",
+			"outbid_made_web_notification",
+			"ending_soon_web_notification",
+			"ending_soon_mail_notification",
+			"seller_content_bid_web_notification",
+			"seller_content_bid_mail_notification",
+			"seller_content_comment_web_notification",
+			"seller_content_comment_mail_notification"
+		]
+	},
+	"vault_notifications.user_notification": {
+		"joinColumns": [
+			"id"
+		],
+		"conditions": "",
+		"columns": [
+			"id",
+			"user_id",
+			"agent_id",
+			"external_resource_id",
+			"inserted_at",
+			"viewed",
+			"notification_event"
+		]
+	}
+}
